@@ -51,7 +51,22 @@ export default {
     login () {
       this.$refs.loginform.validate(isOk => {
         if (isOk) {
-          console.log(123)
+          this.$axios({
+            url: '/authorizations',
+            method: 'post',
+            data: this.loginform
+          }).then(res => {
+            console.log(res)
+            window.localStorage.setItem('user-token', res.data.data.token)
+            this.$router.push({
+              path: '/home'
+            })
+          }).catch(() => {
+            this.$message({
+              message: '手机号或者验证码错误',
+              type: 'warning'
+            })
+          })
         } else {
           this.loginform.mobile = ''
           this.loginform.code = ''

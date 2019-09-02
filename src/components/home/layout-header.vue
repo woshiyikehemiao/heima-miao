@@ -32,23 +32,24 @@ export default {
   },
   methods: {
     getData () {
-      let token = window.localStorage.getItem('user-token')
-      console.log(token)
+      // let token = window.localStorage.getItem('user-token')
+      // console.log(token)
       this.$axios({
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
+        // headers: {
+        //   'Authorization': `Bearer ${token}`
+        // },
         url: '/user/profile'
       }).then(res => {
         // console.log(res)
-        this.userInfo = res.data.data
-      }).catch(err => {
-        console.log(err)
-        this.$message({
-          type: 'warning',
-          message: '获取信息失败'
-        })
+        this.userInfo = res.data
       })
+      // .catch(err => {
+      //   console.log(err)
+      //   this.$message({
+      //     type: 'warning',
+      //     message: '获取信息失败'
+      //   })
+      // })
     },
     handleCommand (command) {
       if (command === 'info') {

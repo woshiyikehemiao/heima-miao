@@ -7,8 +7,8 @@
       <el-header>
         <layout-header></layout-header>
       </el-header>
-      <el-main>
-        主体
+      <el-main class="main">
+        <router-view></router-view>
       </el-main>
     </el-container>
 
@@ -22,5 +22,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
+.main{
+  padding: 0;
+}
 </style>

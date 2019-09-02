@@ -57,16 +57,17 @@ export default {
             data: this.loginform
           }).then(res => {
             // console.log(res)
-            window.localStorage.setItem('user-token', res.data.data.token)
+            window.localStorage.setItem('user-token', res.data.token)
             this.$router.push({
               path: '/home'
             })
-          }).catch(() => {
-            this.$message({
-              message: '手机号或者验证码错误',
-              type: 'warning'
-            })
           })
+          // .catch(() => {
+          //   this.$message({
+          //     message: '手机号或者验证码错误',
+          //     type: 'warning'
+          //   })
+          // })
         } else {
           this.loginform.mobile = ''
           this.loginform.code = ''

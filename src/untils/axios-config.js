@@ -8,7 +8,7 @@ axios.interceptors.request.use((config) => {
   return config
 }, () => {})
 axios.interceptors.response.use((response) => {
-  return response.data ? response.data : response.data
+  return response.data ? response.data : {}
 }, (err) => {
   debugger
   //   console.log(err)

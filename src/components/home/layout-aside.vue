@@ -20,7 +20,7 @@
           <el-menu-item index="/home/publish">发布文章</el-menu-item>
           <el-menu-item index="/home/articles">内容列表</el-menu-item>
           <el-menu-item index="/home/comment">评论管理</el-menu-item>
-          <el-menu-item index="/home/material">素材管理</el-menu-item>
+          <el-menu-item index="/home/meterial">素材管理</el-menu-item>
         </el-submenu>
          <el-submenu index="2">
           <template slot="title">

@@ -19,6 +19,9 @@ export default new Router({
     }, {
       path: 'comment',
       component: () => import('./views/comment')
+    }, {
+      path: 'meterial',
+      component: () => import('./views/meterial')
     }]
   },
   {

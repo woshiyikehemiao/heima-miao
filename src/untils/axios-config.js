@@ -3,6 +3,7 @@ import router from '../permission'
 import jsonbigint from 'json-bigint'
 import { Message } from 'element-ui'
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
+
 axios.defaults.transformResponse = [function (data) {
   return jsonbigint.parse(data)
 }]

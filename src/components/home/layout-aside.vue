@@ -48,7 +48,8 @@ export default {
 <style lang='less' scoped>
 .menu{
   width: 200px;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   .logo{
     padding: 10px;
     background-color: #2e2f32;

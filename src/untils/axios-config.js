@@ -5,7 +5,7 @@ import { Message } from 'element-ui'
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
 
 axios.defaults.transformResponse = [function (data) {
-  return jsonbigint.parse(data)
+  return data ? jsonbigint.parse(data) : {}
 }]
 axios.interceptors.request.use((config) => {
   let token = window.localStorage.getItem('user-token')

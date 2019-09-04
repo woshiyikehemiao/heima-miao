@@ -9,8 +9,8 @@
         <el-card v-for="item in list" :key="item.id" class="box">
           <img :src="item.url" alt />
           <el-row class="icon" type="flex" justify="space-around">
-            <i :style="{color:item.is_collected?'red':''}" class="el-icon-star-on i1"></i>
-            <i class="el-icon-delete i2"></i>
+            <i @click='changeStatus(item)' :style="{color:item.is_collected?'red':''}" class="el-icon-star-on i1"></i>
+            <i @click='deleteImg(item.id)' class="el-icon-delete i2"></i>
           </el-row>
         </el-card>
       </el-tab-pane>
@@ -42,6 +42,31 @@ export default {
     }
   },
   methods: {
+    changeStatus (item) {
+      let mess = item.is_collected ? '取消' : ''
+      this.$confirm(`您确定要${mess}收藏此图片吗`, '提示').then(() => {
+        this.$axios({
+          method: 'put',
+          url: `/user/images/${item.id}`,
+          data: {
+            collect: !item.is_collected
+          }
+        }).then(() => {
+          this.getMeterial()
+        })
+      })
+    },
+    deleteImg (id) {
+      this.$confirm('您确认要删除此图片吗', '提示').then(() => {
+        this.$axios({
+          url: `/user/images/${id}`,
+          method: 'delete'
+        }).then(res => {
+          // console.log(res)
+          this.getMeterial()
+        })
+      })
+    },
     changepage (newpage) {
       // alert(this.page.page)
       this.page.page = newpage

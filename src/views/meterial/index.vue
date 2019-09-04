@@ -1,23 +1,31 @@
 <template>
-<el-card class="card">
-  <bread-crumb slot="header">
-  <template slot="title">
-    素材管理
-  </template>
-  </bread-crumb>
-  <el-tabs v-model="activeName">
-    <el-tab-pane label="用户管理" name="all" class="tab">
-      <!-- 获取参数便利生成图片 -->
-      <el-card v-for="item in list" :key='item.id' class="box">
-        <img :src="item.url" alt="">
-      </el-card>
-    </el-tab-pane>
-    <el-tab-pane label="配置管理" name="collect">
-      <!-- 获取参数便利生成图片 -->
+  <el-card class="card">
+    <bread-crumb slot="header">
+      <template slot="title">素材管理</template>
+    </bread-crumb>
+    <el-tabs v-model="activeName" @tab-click="changtab">
+      <el-tab-pane label="全部素材" name="all" class="tab">
+        <!-- 获取参数便利生成图片 -->
+        <el-card v-for="item in list" :key="item.id" class="box">
+          <img :src="item.url" alt />
+          <el-row class="icon" type="flex" justify="space-around">
+            <i :style="{color:item.is_collected?'red':''}" class="el-icon-star-on i1"></i>
+            <i class="el-icon-delete i2"></i>
+          </el-row>
+        </el-card>
+      </el-tab-pane>
+      <el-tab-pane label="收藏图片" name="collect" class="tab">
+        <!-- 获取参数便利生成图片 -->
+        <el-card v-for="item in list" :key="item.id" class="box">
+          <img :src="item.url" alt />
+        </el-card>
+      </el-tab-pane>
+          <el-row class="page" type="flex" justify="center">
+      <el-pagination background :page-size="page.size" :current-page="page.page" :total="page.total" @current-change='changepage'></el-pagination>
+    </el-row>
+    </el-tabs>
 
-    </el-tab-pane>
-  </el-tabs>
-</el-card>
+  </el-card>
 </template>
 
 <script>
@@ -25,19 +33,37 @@ export default {
   data () {
     return {
       activeName: 'all',
-      list: []
+      list: [],
+      page: {
+        page: 1,
+        size: 10,
+        total: 0
+      }
     }
   },
   methods: {
+    changepage (newpage) {
+      // alert(this.page.page)
+      this.page.page = newpage
+      this.getMeterial()
+    },
+    changtab () {
+      this.page.page = 1
+      this.getMeterial()
+    },
     getMeterial () {
       this.$axios({
         url: '/user/images',
         params: {
-          collect: false
+          // collect: false
+          page: this.page.page,
+          per_page: this.page.size,
+          collect: this.activeName === 'collect'
         }
       }).then(res => {
         console.log(res)
         this.list = res.data.results
+        this.page.total = res.data.total_count
       })
     }
   },
@@ -48,21 +74,37 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.card{
-  .tab{
+.card {
+  .page{
+    margin-top: 15px;
+  }
+  .tab {
     display: flex;
     flex-wrap: wrap;
-    .box{
+    height: 400px;
+    .box {
       // flex: 20%;
-      width:200px;
+      width: 200px;
       height: 200px;
       margin: 0 10px;
-      img{
+      position: relative;
+      img {
+        width: 150px;
+        height: 130px;
+      }
+      .icon {
+        position: absolute;
+        bottom: 5px;
+        left: 0;
         width: 100%;
-        height: 100%;
+        .i1 {
+          font-size: 20px;
+        }
+        .i2 {
+          font-size: 18px;
+        }
       }
     }
   }
 }
-
 </style>

@@ -27,6 +27,23 @@
         ></el-date-picker>
       </el-form-item>
     </el-form>
+    <div class="article-number">共找到xxx条符合条件的内容</div>
+    <div class="article-list">
+    <div class="row" v-for="(item,index) in list" :key='index'>
+        <div class="left">
+            <img src="../../assets/img/avatar.jpg" alt="">
+            <div class="content">
+                <span class="title">这是标题</span>
+                <span class="status">已发表</span>
+                <span class="time">123456</span>
+            </div>
+        </div>
+        <div class="right">
+            <span><i class="el-icon-edit"></i>修改</span>
+            <span><i class="el-icon-delete"></i>删除</span>
+        </div>
+    </div>
+    </div>
   </el-card>
 </template>
 
@@ -47,6 +64,46 @@ export default {
 .card{
     .form{
         margin-left: 40px;
+    }
+    .article-number{
+        border-bottom: 1px dashed #ccc;
+        padding-bottom: 10px;
+        color: #323745;
+        font-size: 14px;
+    }
+    .article-list{
+        .row{
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            .left{
+                display: flex;
+                img{
+                    width: 180px;
+                    height: 100px;
+                }
+                .content{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-around;
+                    margin-left: 10px;
+                    font-size: 14px;
+                    color: #333;
+                    .time{
+                        color:#999;
+                        font-size: 12px;
+                    }
+                }
+            }
+            .right{
+                span{
+                    margin-left: 8px;
+                    color: #333;
+                    font-size: 12px;
+                    cursor: pointer;
+                }
+            }
+        }
     }
 }
 </style>

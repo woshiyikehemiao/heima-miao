@@ -22,6 +22,9 @@ export default new Router({
     }, {
       path: 'meterial',
       component: () => import('./views/meterial')
+    }, {
+      path: 'articles',
+      component: () => import('./views/articles')
     }]
   },
   {

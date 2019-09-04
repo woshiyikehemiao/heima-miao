@@ -3,6 +3,11 @@
     <bread-crumb slot="header">
       <template slot="title">素材管理</template>
     </bread-crumb>
+        <el-upload class="upload" action="" :show-file-list="false" :http-request='uploadImg'>
+          <el-button>
+            上传图片
+          </el-button>
+        </el-upload>
     <el-tabs v-model="activeName" @tab-click="changtab">
       <el-tab-pane label="全部素材" name="all" class="tab">
         <!-- 获取参数便利生成图片 -->
@@ -42,6 +47,19 @@ export default {
     }
   },
   methods: {
+    uploadImg (params) {
+      console.log(params)
+      let loadformdata = new FormData()
+      loadformdata.append('image', params.file)
+      this.$axios({
+        url: '/user/images',
+        method: 'post',
+        data: loadformdata
+      }).then(res => {
+        console.log(res)
+        this.getMeterial()
+      })
+    },
     changeStatus (item) {
       let mess = item.is_collected ? '取消' : ''
       this.$confirm(`您确定要${mess}收藏此图片吗`, '提示').then(() => {
@@ -100,6 +118,11 @@ export default {
 
 <style lang="less" scoped>
 .card {
+  .upload{
+    position: absolute;
+    right: 38px;
+    top: 120px;
+  }
   .page{
     margin-top: 15px;
   }

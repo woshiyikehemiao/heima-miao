@@ -30,7 +30,7 @@
         ></el-date-picker>
       </el-form-item>
     </el-form>
-    <div class="article-number">共找到xxx条符合条件的内容</div>
+    <div class="article-number">共找到{{page.total}}条符合条件的内容</div>
     <div class="article-list">
       <div class="row" v-for="item in articleList" :key='item.id.toString()'>
           <div class="left">
@@ -47,6 +47,14 @@
           </div>
       </div>
     </div>
+    <el-row type="flex" justify="center">
+      <el-pagination
+      @current-change='currentchange'
+      :current-page="page.page"
+      :page-size="page.size"
+      :total="page.total">
+      </el-pagination>
+    </el-row>
   </el-card>
 </template>
 
@@ -61,7 +69,12 @@ export default {
       },
       channelList: [],
       articleList: [],
-      srcImg: require('../../assets/img/avatar.jpg')
+      srcImg: require('../../assets/img/avatar.jpg'),
+      page: {
+        page: 1,
+        size: 10,
+        total: 0
+      }
     }
   },
   methods: {
@@ -76,12 +89,22 @@ export default {
         })
       })
     },
+    currentchange (newpage) {
+      this.page.page = newpage
+      this.change()
+    },
     changecondition () {
+      this.page.page = 1
+      this.change()
+    },
+    change () {
       let params = {
         channel_id: this.searchForm.channel_id,
         status: this.searchForm.status === 5 ? null : this.searchForm.status,
         begin_pubdate: this.searchForm.articleDate.length > 0 ? this.searchForm.articleDate[0] : null,
-        end_pubdate: this.searchForm.articleDate.length > 1 ? this.searchForm.articleDate[1] : null
+        end_pubdate: this.searchForm.articleDate.length > 1 ? this.searchForm.articleDate[1] : null,
+        page: this.page.page,
+        per_page: this.page.size
       }
       this.getArticles(params)
     },
@@ -100,11 +123,13 @@ export default {
       }).then(res => {
         console.log(res)
         this.articleList = res.data.results
+        this.page.total = res.data.total_count
       })
     }
   },
   created () {
-    this.getArticles()
+    // this.getArticles()
+    this.changecondition()
     this.getChannels()
   },
   filters: {

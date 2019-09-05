@@ -5,7 +5,7 @@
     </bread-crumb>
     <el-form class="form">
       <el-form-item label="文章状态：">
-        <el-radio-group v-model="radio">
+        <el-radio-group v-model="searchForm.status" @change='changecondition'>
           <el-radio :label="5">全部</el-radio>
           <el-radio :label="0">草稿</el-radio>
           <el-radio :label="1">待审核</el-radio>
@@ -13,14 +13,17 @@
           <el-radio :label="3">审核失败</el-radio>
         </el-radio-group>
       </el-form-item>
+      {{searchForm}}
       <el-form-item label="频道列表：">
-        <el-select v-model="articleSelect">
-          <el-option value="1" label="a" v-for="(item,index) in list" :key="index"></el-option>
+        <el-select v-model="searchForm.channel_id" @change='changecondition'>
+          <el-option v-for="item in channelList" :key="item.id" :value="item.id" :label="item.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="时间选择：">
         <el-date-picker
-          v-model="articleDate"
+        @change='changecondition'
+        value-format="yyyy-MM-dd"
+          v-model="searchForm.articleDate"
           type="daterange"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
@@ -51,18 +54,38 @@
 export default {
   data () {
     return {
-      radio: 1,
-      articleSelect: '',
-      articleDate: '',
-      list: [1, 2, 3, 4, 5, 6],
+      searchForm: {
+        status: 5,
+        channel_id: null,
+        articleDate: []
+      },
+      channelList: [],
       articleList: [],
       srcImg: require('../../assets/img/avatar.jpg')
     }
   },
   methods: {
-    getArticles () {
+    changecondition () {
+      let params = {
+        channel_id: this.searchForm.channel_id,
+        status: this.searchForm.status === 5 ? null : this.searchForm.status,
+        begin_pubdate: this.searchForm.articleDate.length > 0 ? this.searchForm.articleDate[0] : null,
+        end_pubdate: this.searchForm.articleDate.length > 1 ? this.searchForm.articleDate[1] : null
+      }
+      this.getArticles(params)
+    },
+    getChannels () {
       this.$axios({
-        url: '/articles'
+        url: '/channels'
+      }).then(res => {
+        console.log(res)
+        this.channelList = res.data.channels
+      })
+    },
+    getArticles (params) {
+      this.$axios({
+        url: '/articles',
+        params
       }).then(res => {
         console.log(res)
         this.articleList = res.data.results
@@ -71,6 +94,7 @@ export default {
   },
   created () {
     this.getArticles()
+    this.getChannels()
   }
 }
 </script>

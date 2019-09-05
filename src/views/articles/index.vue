@@ -13,7 +13,7 @@
           <el-radio :label="3">审核失败</el-radio>
         </el-radio-group>
       </el-form-item>
-      {{searchForm}}
+      <!-- {{searchForm}} -->
       <el-form-item label="频道列表：">
         <el-select v-model="searchForm.channel_id" @change='changecondition'>
           <el-option v-for="item in channelList" :key="item.id" :value="item.id" :label="item.name"></el-option>
@@ -32,20 +32,20 @@
     </el-form>
     <div class="article-number">共找到xxx条符合条件的内容</div>
     <div class="article-list">
-    <div class="row" v-for="item in articleList" :key='item.id.toString()'>
-        <div class="left">
-            <img :src="item.cover.images[0]?item.cover.images[0]:srcImg" alt="">
-            <div class="content">
-                <span class="title">{{item.title}}</span>
-                <span class="status">{{item.status}}</span>
-                <span class="time">{{item.pubdate}}</span>
-            </div>
-        </div>
-        <div class="right">
-            <span><i class="el-icon-edit"></i>修改</span>
-            <span><i class="el-icon-delete"></i>删除</span>
-        </div>
-    </div>
+      <div class="row" v-for="item in articleList" :key='item.id.toString()'>
+          <div class="left">
+              <img :src="item.cover.images[0]?item.cover.images[0]:srcImg" alt="">
+              <div class="content">
+                  <span class="title">{{item.title}}</span>
+                  <el-tag class="status" :type="item.status|statusstyle">{{item.status|statustitle}}</el-tag>
+                  <span class="time">{{item.pubdate}}</span>
+              </div>
+          </div>
+          <div class="right">
+              <span><i class="el-icon-edit"></i>修改</span>
+              <span @click="deletecontent(item.id)"><i class="el-icon-delete"></i>删除</span>
+          </div>
+      </div>
     </div>
   </el-card>
 </template>
@@ -65,6 +65,17 @@ export default {
     }
   },
   methods: {
+    deletecontent (id) {
+      this.$confirm('您确定要删除本条内容吗', '提示').then(res => {
+        this.$axios({
+          method: 'delete',
+          url: `/articles/${id.toString()}`
+        }).then(res => {
+          // console.log(res)
+          this.changecondition()
+        })
+      })
+    },
     changecondition () {
       let params = {
         channel_id: this.searchForm.channel_id,
@@ -95,6 +106,32 @@ export default {
   created () {
     this.getArticles()
     this.getChannels()
+  },
+  filters: {
+    statustitle (val) {
+      switch (val) {
+        case 0:
+          return '草稿'
+        case 1:
+          return '未发表'
+        case 2:
+          return '已发表'
+        case 3:
+          return '审核失败'
+      }
+    },
+    statusstyle (val) {
+      switch (val) {
+        case 0:
+          return ''
+        case 1:
+          return 'info'
+        case 2:
+          return 'success'
+        case 3:
+          return 'warning'
+      }
+    }
   }
 }
 </script>
@@ -128,6 +165,10 @@ export default {
                     margin-left: 10px;
                     font-size: 14px;
                     color: #333;
+                    .status{
+                      text-align: center;
+                      width: 70px;
+                    }
                     .time{
                         color:#999;
                         font-size: 12px;

@@ -3,14 +3,14 @@
     <bread-crumb slot="header">
       <template slot="title">发布文章</template>
     </bread-crumb>
-    <el-form :model="formData" :rules="formrules" ref="formpublish" class="form">
+    <el-form :model="formData" :rules="formrules" ref="formpublish" class="form" label-width="100px">
       <el-form-item label="标题" prop="title">
         <el-input class="title" v-model="formData.title"></el-input>
       </el-form-item>
       <el-form-item label="内容" prop="content">
-        <el-input class="content" type="textarea" v-model="formData.content"></el-input>
+        <quill-editor class="content" v-model="formData.content"></quill-editor>
       </el-form-item>
-      <el-form-item label="封面">
+      <el-form-item label="封面" class="coverimg">
         <el-radio-group v-model="formData.cover.type">
           <el-radio :label="1">单图</el-radio>
           <el-radio :label="3">三图</el-radio>
@@ -107,7 +107,11 @@ export default {
     width: 400px;
   }
   .content{
+    height: 400px;
     width: 800px;
+  }
+  .coverimg{
+    margin-top: 120px;
   }
 }
 </style>

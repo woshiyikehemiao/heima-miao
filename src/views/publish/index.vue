@@ -19,7 +19,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item>
-      <cover-images :imgs="formData.cover.images"></cover-images>
+      <cover-images @coverimg="changeimg" :imgs="formData.cover.images"></cover-images>
       </el-form-item>
       <el-form-item label="频道" prop="channel_id">
         <el-select v-model="formData.channel_id">
@@ -56,6 +56,15 @@ export default {
     }
   },
   methods: {
+    changeimg (url, index) {
+      this.formData.cover.images = this.formData.cover.images.map((item, ind) => {
+        if (ind === index) {
+          return url
+        } else {
+          return item
+        }
+      })
+    },
     changeradio () {
       let images
       switch (this.formData.cover.type) {

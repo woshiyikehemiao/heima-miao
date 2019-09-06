@@ -11,7 +11,7 @@
         <quill-editor class="content" v-model="formData.content"></quill-editor>
       </el-form-item>
       <el-form-item label="封面" class="coverimg">
-        <el-radio-group v-model="formData.cover.type">
+        <el-radio-group v-model="formData.cover.type" @change="changeradio">
           <el-radio :label="1">单图</el-radio>
           <el-radio :label="3">三图</el-radio>
           <el-radio :label="0">无图</el-radio>
@@ -53,6 +53,22 @@ export default {
     }
   },
   methods: {
+    changeradio () {
+      let images
+      switch (this.formData.cover.type) {
+        case 0:
+        case -1:
+          images = []
+          break
+        case 1:
+          images = ['']
+          break
+        case 3:
+          images = ['', '', '']
+          break
+      }
+      this.formData.cover.images = images
+    },
     getdefaultsinfo (articleId) {
       this.$axios({
         url: `/articles/${articleId}`

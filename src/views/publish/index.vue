@@ -53,6 +53,14 @@ export default {
     }
   },
   methods: {
+    getdefaultsinfo (articleId) {
+      this.$axios({
+        url: `/articles/${articleId}`
+      }).then(res => {
+        console.log(res)
+        this.formData = res.data
+      })
+    },
     publish () {
       this.$refs.formpublish.validate(isOk => {
         if (isOk) {
@@ -81,18 +89,22 @@ export default {
   },
   created () {
     this.getChannel()
+    let articleId = this.$route.params.articleId
+    if (articleId) {
+      this.getdefaultsinfo(articleId)
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
 .form{
-  margin-left: 30px;
+  margin-left:100px;
   .title{
-    width: 600px;
+    width: 400px;
   }
   .content{
-    width: 600px;
+    width: 800px;
   }
 }
 </style>

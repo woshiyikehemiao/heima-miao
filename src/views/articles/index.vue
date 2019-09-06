@@ -42,7 +42,7 @@
               </div>
           </div>
           <div class="right">
-              <span><i class="el-icon-edit"></i>修改</span>
+              <span @click="changearticle(item.id)"><i class="el-icon-edit"></i>修改</span>
               <span @click="deletecontent(item.id)"><i class="el-icon-delete"></i>删除</span>
           </div>
       </div>
@@ -78,6 +78,9 @@ export default {
     }
   },
   methods: {
+    changearticle (id) {
+      this.$router.push(`/home/publish/${id.toString()}`)
+    },
     deletecontent (id) {
       this.$confirm('您确定要删除本条内容吗', '提示').then(res => {
         this.$axios({

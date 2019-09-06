@@ -3,12 +3,12 @@
     <bread-crumb slot="header">
       <template slot="title">发布文章</template>
     </bread-crumb>
-    <el-form :model="formData" :rules="formrules" ref="formpublish">
+    <el-form :model="formData" :rules="formrules" ref="formpublish" class="form">
       <el-form-item label="标题" prop="title">
-        <el-input v-model="formData.title"></el-input>
+        <el-input class="title" v-model="formData.title"></el-input>
       </el-form-item>
       <el-form-item label="内容" prop="content">
-        <el-input type="textarea" v-model="formData.content"></el-input>
+        <el-input class="content" type="textarea" v-model="formData.content"></el-input>
       </el-form-item>
       <el-form-item label="封面">
         <el-radio-group v-model="formData.cover.type">
@@ -85,5 +85,14 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" scoped>
+.form{
+  margin-left: 30px;
+  .title{
+    width: 600px;
+  }
+  .content{
+    width: 600px;
+  }
+}
 </style>

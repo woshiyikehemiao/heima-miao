@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import eventBus from '../../untils/eventBus'
 export default {
   data () {
     return {
@@ -42,7 +43,7 @@ export default {
         photo: ''
       },
       userrules: {
-        name: [{ required: true, message: '用户名不能为空' }, { max: 10, min: 2, mesage: '用户名长度为2-10' }],
+        name: [{ required: true, message: '用户名不能为空' }, { max: 7, min: 1, mesage: '用户名长度为2-10' }],
         intro: [{ required: true, message: '简介不能为空' }],
         email: [{ pattern: /^\w+@[a-z0-9]+\.[a-z]{2,4}$/, message: '邮箱格式不正确' }]
       },
@@ -59,6 +60,7 @@ export default {
         data: formdata
       }).then(res => {
         this.formdata.photo = res.data.photo
+        eventBus.$emit('changeuserinfo')
       })
     },
     getdata () {
@@ -79,6 +81,7 @@ export default {
             type: 'success',
             message: '用户数据保存成功'
           })
+          eventBus.$emit('changeuserinfo')
         })
       })
     }

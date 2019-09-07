@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import eventBus from '../../untils/eventBus'
 export default {
   data () {
     return {
@@ -64,6 +65,9 @@ export default {
   },
   created () {
     this.getData()
+    eventBus.$on('changeuserinfo', () => {
+      this.getData()
+    })
   }
 }
 </script>

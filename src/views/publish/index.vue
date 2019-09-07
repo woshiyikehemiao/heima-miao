@@ -10,7 +10,7 @@
       <el-form-item label="内容" prop="content">
         <quill-editor class="content" v-model="formData.content"></quill-editor>
       </el-form-item>
-      <el-form-item label="封面" class="coverimg">
+      <el-form-item label="封面" class="coverimg"  prop="cover">
         <el-radio-group v-model="formData.cover.type" @change="changeradio">
           <el-radio :label="1">单图</el-radio>
           <el-radio :label="3">三图</el-radio>
@@ -37,6 +37,15 @@
 <script>
 export default {
   data () {
+    let validator = function (rule, value, callBack) {
+      if (value.type > 0 && value.images.every(item => item)) {
+        callBack()
+      } else if (value.type <= 0) {
+        callBack()
+      } else {
+        callBack(new Error('对不起,您未设置完整的封面'))
+      }
+    }
     return {
       formData: {
         title: '',
@@ -50,7 +59,8 @@ export default {
       formrules: {
         title: [{ required: true, message: '标题不能为空' }],
         content: [{ required: true, message: '内容不能为空' }],
-        channel_id: [{ required: true, message: '频道不能为空' }]
+        channel_id: [{ required: true, message: '频道不能为空' }],
+        cover: [{ validator }]
       },
       list: []
     }

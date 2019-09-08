@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-aside style="width:200px">
+    <el-aside :style="{width:isCollapse?'60px':'200px'}">
       <layout-aside></layout-aside>
     </el-aside>
     <el-container>
@@ -16,8 +16,18 @@
 </template>
 
 <script>
+import eventBus from '../../untils/eventBus'
 export default {
-
+  created () {
+    eventBus.$on('changeCollapse', item => {
+      this.isCollapse = item
+    })
+  },
+  data () {
+    return {
+      isCollapse: false
+    }
+  }
 }
 </script>
 

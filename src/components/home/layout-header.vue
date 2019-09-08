@@ -1,7 +1,7 @@
 <template>
 <el-row class="row" type="flex" justify="space-between">
   <el-col :span='7' class="col1">
-    <i class="el-icon-s-unfold"></i>
+    <i @click='changeCollapse' :class="{'el-icon-s-unfold': isCollapse,'el-icon-s-fold': !isCollapse}"></i>
     <span>
       江苏传智播客教育科技股份有限公司
     </span>
@@ -28,10 +28,15 @@ export default {
   data () {
     return {
       userInfo: {},
-      defaultImg: require('../../assets/img/avatar.jpg')
+      defaultImg: require('../../assets/img/avatar.jpg'),
+      isCollapse: false
     }
   },
   methods: {
+    changeCollapse () {
+      this.isCollapse = !this.isCollapse
+      eventBus.$emit('changeCollapse', this.isCollapse)
+    },
     getData () {
       // let token = window.localStorage.getItem('user-token')
       // console.log(token)

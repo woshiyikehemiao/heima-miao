@@ -1,12 +1,14 @@
 <template>
 <el-menu
+      :type="{width:isCollapse?'60px':'200px'}"
+      :collapse="isCollapse"
       :router="true"
       class="menu"
       background-color="#323745"
       text-color="#adafb5"
       active-text-color="#ffd04b">
       <div class="logo">
-        <img src="../../assets/img/logo_admin.png" alt="">
+        <img :src="isCollapse?collapseimg:notcollapseimg" alt="">
       </div>
       <el-menu-item index="/">
         <i class="el-icon-s-home"></i>
@@ -40,14 +42,25 @@
 </template>
 
 <script>
+import eventBus from '../../untils/eventBus'
 export default {
-
+  data () {
+    return {
+      isCollapse: false,
+      collapseimg: require('../../assets/img/toutiao.png'),
+      notcollapseimg: require('../../assets/img/logo_admin.png')
+    }
+  },
+  created () {
+    eventBus.$on('changeCollapse', item => {
+      this.isCollapse = item
+    })
+  }
 }
 </script>
 
 <style lang='less' scoped>
 .menu{
-  width: 200px;
   min-height: 100vh;
   height: 100%;
   .logo{
